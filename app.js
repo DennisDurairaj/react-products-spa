@@ -1,9 +1,34 @@
 class ProductList extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      products: []
+    }
+
+    this.handleProductUpVote = this.handleProductUpVote.bind(this);
+  }
+
+  componentDidMount() {
+    this.setState({ products: Data });
+  }
+
   handleProductUpVote(productId) {
-    console.log(productId + ' was upvoted.');
+    const nextProducts = this.state.products.map((product) => {
+      if (product.id === productId) {
+        return Object.assign({}, product, {
+          votes: product.votes + 1,
+        });
+      } else {
+        return product;
+      }
+    });
+    this.setState({
+      products: nextProducts,
+    });
   }
   render() {
-    const products = Data.sort((a, b) => (
+    const products = this.state.products.sort((a, b) => (
       b.votes - a.votes
     ));
     const productComponents = Data.map((product) => (
@@ -34,7 +59,7 @@ class Product extends React.Component {
     this.handleUpVote = this.handleUpVote.bind(this);
   }
   handleUpVote() {
-    this.props.onVote(this.props.id);
+    this.props.onVote(this.props.onVote);
   }
 
   render() {
